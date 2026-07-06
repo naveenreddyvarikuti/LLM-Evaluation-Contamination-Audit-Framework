@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+build/
+dist/
+outputs/
+reports/*
+!reports/sample_eval_report.md
+*.log
+.pytest_cache/
+.ipynb_checkpoints/
+checkpoints/
+*.ckpt
+*.safetensors

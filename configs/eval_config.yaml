@@ -1,0 +1,47 @@
+# Central configuration for the evaluation pipeline (Step 10).
+# Every component that needs a knob turned reads it from here rather than
+# hardcoding it, so CI can override thresholds without touching code.
+
+benchmark:
+  version: "v1"
+  path: "data/benchmarks"
+
+models:
+  candidate: "Qwen/Qwen2.5-Coder-1.5B"
+  baseline: "Qwen/Qwen2.5-Coder-0.5B"
+  judge: "gpt-4o-mini"
+  judge_api_base: null   # set to an OpenAI-compatible endpoint URL to override
+
+contamination:
+  ngram_n: 13
+  overlap_flag_threshold: 0.20
+  overlap_high_risk_threshold: 0.50
+  check_question_side: true
+  check_answer_side: true
+  use_clean_subset_if_contaminated: true
+
+pass_at_k:
+  n_samples: 200
+  k_values: [1, 5, 10, 100]
+  timeout_seconds: 10
+  temperature: 0.8
+
+llm_judge:
+  temperature: 0.0
+  max_tokens: 1024
+  dimensions: ["correctness", "completeness", "code_quality", "explanation_clarity"]
+
+elo:
+  initial_rating: 1500
+  k_factor: 32
+  bootstrap_iterations: 1000
+  confidence_level: 0.95
+
+regression_gates:
+  min_pass_at_1: 0.30
+  max_elo_drop_vs_baseline: 25
+  max_high_severity_failure_rate: 0.10
+  max_contamination_high_risk_rate: 0.05
+
+reporting:
+  output_dir: "reports"
